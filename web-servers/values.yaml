@@ -1,0 +1,34 @@
+nginx:
+  replicaCount: 1
+  image:
+    repository: nginx
+    tag: "1.27"
+    pullPolicy: IfNotPresent
+  containerPort: 80
+  service:
+    type: ClusterIP
+    port: 80
+  resources: {}
+
+apache:
+  replicaCount: 1
+  image:
+    repository: httpd
+    tag: "2.4"
+    pullPolicy: IfNotPresent
+  containerPort: 80
+  service:
+    type: ClusterIP
+    port: 80
+  resources: {}
+
+ingress:
+  enabled: true
+  className: nginx        # set to your ingress controller's class
+  annotations: {}
+  # Host-based routing: one hostname per server
+  nginxHost: nginx.example.local
+  apacheHost: apache.example.local
+  tls:
+    enabled: false
+    secretName: web-servers-tls

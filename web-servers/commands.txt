@@ -1,0 +1,7 @@
+helm install my-release ./web-servers
+# or override values:
+helm install my-release ./web-servers --set nginx.replicaCount=3
+
+helm install my-release ./web-servers \
+  --set ingress.nginxHost=nginx.mydomain.com \
+  --set ingress.apacheHost=apache.mydomain.com

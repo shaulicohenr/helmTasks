@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "web-servers.apache.name" . }}
+  labels:
+    app: apache
+    release: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.apache.replicaCount }}
+  selector:
+    matchLabels:
+      app: apache
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: apache
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: apache
+          image: "{{ .Values.apache.image.repository }}:{{ .Values.apache.image.tag }}"
+          imagePullPolicy: {{ .Values.apache.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.apache.containerPort }}
+          {{- with .Values.apache.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "web-servers.apache.name" . }}
+  labels:
+    app: apache
+    release: {{ .Release.Name }}
+spec:
+  type: {{ .Values.apache.service.type }}
+  ports:
+    - port: {{ .Values.apache.service.port }}
+      targetPort: {{ .Values.apache.containerPort }}
+      protocol: TCP
+      name: http
+  selector:
+    app: apache
+    release: {{ .Release.Name }}
